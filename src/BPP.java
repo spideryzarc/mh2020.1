@@ -16,6 +16,9 @@ public class BPP {
      */
     int w[];
 
+    /**soma dos pesos*/
+    int wSum;
+
     public BPP(int n, int C) {
         this.C = C;
         w = new int[n];
@@ -27,6 +30,7 @@ public class BPP {
             s += x;
         return (int) Math.ceil((double) s / C);
     }
+
 
 
     @Override
@@ -43,8 +47,10 @@ public class BPP {
         int n = sc.nextInt();
         C = sc.nextInt();
         w = new int[n];
+        wSum = 0;
         for (int i = 0; i < n; i++) {
             w[i] = sc.nextInt();
+            wSum+=w[i];
         }
         sc.close();
     }
@@ -60,31 +66,23 @@ public class BPP {
 
     public static void main(String args[]) throws FileNotFoundException {
 //        BPP bpp = new BPP("/home/einstein/Documentos/Hard28/Hard28_BPP13.txt");
-        BPP bpp = new BPP("/home/einstein/Documentos/rand/BPP_50_50_0.1_0.7_0.txt");
+        BPP bpp = new BPP("/home/einstein/Documentos/rand/BPP_1000_1000_0.2_0.8_7.txt");
         System.out.println(bpp);
         System.out.println("LB "+bpp.LB());
 
         Sol sol = new Sol(bpp);
 
-        int order[] = new int[bpp.w.length];
-        for (int i = 0; i < order.length; i++) {
-            order[i] = i;
-        }
+        RMS rms = new RMS(bpp,100);
 
-        Utils.shuffle(order);
-        bpp.trivial(sol);
-        System.out.println(sol);
+        rms.run(sol);
+        System.out.println("RMS: "+sol);
 
-        HC hc = new HC(bpp);
-        hc.run(sol);
-
-
-        System.out.println(sol);
+//        System.out.println(sol);
 
 
     }
 
-    private void trivial(Sol sol) {
+    public void trivial(Sol sol) {
         sol.reset();
         for (int i = 0; i < w.length; i++) {
             sol.add(i,i);

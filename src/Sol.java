@@ -75,8 +75,10 @@ public class Sol {
         return binOf[i];
     }
 
-    public ArrayList<Bin> bins() {
-        return bins;
+    public ArrayList<Bin> getBins(ArrayList<Bin> list) {
+        list.clear();
+        list.addAll(bins);
+        return list;
     }
 
     /**
@@ -95,11 +97,20 @@ public class Sol {
         return true;
     }
 
+    public void copy(Sol src) {
+        this.reset();
+        for (int b = 0; b < src.size(); b++) {
+            for (int i : src.bins.get(b).itens) {
+                this.add(i,b);
+            }
+        }
+    }
+
     /**
      * Representa um pacote
      */
     class Bin {
-        ArrayList<Integer> itens = new ArrayList<>();
+        private ArrayList<Integer> itens = new ArrayList<>();
         /**
          * soma dos pesos dos itens  neste pacote
          */
@@ -122,6 +133,10 @@ public class Sol {
         public void remove(Integer i) {
             itens.remove(i);
             load -= bpp.w[i];
+        }
+
+        public int size() {
+            return itens.size();
         }
     }
 }
