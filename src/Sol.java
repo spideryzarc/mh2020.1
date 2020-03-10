@@ -6,7 +6,7 @@ import static java.util.Arrays.fill;
  * Representação de uma solução para o bpp
  */
 public class Sol {
-    private BPP bpp;
+    BPP bpp;
     private ArrayList<Bin> bins = new ArrayList<>();
     /**
      * binOf[i] é o pacote do item i
@@ -25,13 +25,11 @@ public class Sol {
      */
     public boolean add(int i, int b) {
         if (binOf[i] != null) {
-            System.err.println("Item já alocado: " + i);
-            return false;
+            throw new NullPointerException("Item já alocado: " + i);
         }
 
         if (bins.size() < b) {
-            System.err.println("Pacote não aberto " + b);
-            return false;
+            throw new NullPointerException("Pacote não aberto");
         } else if (bins.size() == b) {
             //abre novo pacote
             bins.add(new Bin());
@@ -42,8 +40,7 @@ public class Sol {
 
     public boolean add(int i, Bin b) {
         if (binOf[i] != null) {
-            System.err.println("Item já alocado: " + i);
-            return false;
+            throw new NullPointerException("Item já alocado: " + i);
         }
 
         if (b.load + bpp.w[i] > bpp.C) {
@@ -87,8 +84,7 @@ public class Sol {
     public boolean remove(int i) {
         Bin b = binOf[i];
         if (b == null) {
-            System.err.println("remover item não alocado");
-            return false;
+            throw new NullPointerException("remover item não alocado");
         }
         b.remove(i);
         binOf[i] = null;
@@ -101,9 +97,20 @@ public class Sol {
         this.reset();
         for (int b = 0; b < src.size(); b++) {
             for (int i : src.bins.get(b).itens) {
-                this.add(i,b);
+                this.add(i, b);
             }
         }
+    }
+
+    public void swap(int a, int b) {
+        Bin ba = binOf[a];
+        Bin bb = binOf[b];
+        ba.remove(a);
+        bb.remove(b);
+        ba.add(b);
+        bb.add(a);
+        binOf[a] = bb;
+        binOf[b] = ba;
     }
 
     /**

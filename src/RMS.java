@@ -1,13 +1,20 @@
-public class RMS {
+public class RMS implements Solver {
     BPP bpp;
     int ite;
 
-    public RMS(BPP bpp, int ite) {
-        this.bpp = bpp;
+    @Override
+    public String toString() {
+        return "RMS{" +
+                "ite=" + ite +
+                '}';
+    }
+
+    public RMS(int ite) {
         this.ite = ite;
     }
 
-    public void run(Sol best){
+    public int run(Sol best) {
+        bpp = best.bpp;
         HC hc = new HC(bpp);
         bpp.trivial(best);
         Sol sol = new Sol(bpp);
@@ -19,14 +26,13 @@ public class RMS {
 
         for (int i = 1; i <= ite; i++) {
             Utils.shuffle(order);
-            bpp.firstFit(sol,order);
+            bpp.firstFit(sol, order);
             hc.run(sol);
-            if(sol.size() < best.size()){
+            if (sol.size() < best.size()) {
                 best.copy(sol);
-                System.out.println(i+" HC "+best.size());
+                System.out.println(i + " HC " + best.size());
             }
         }
-
+        return best.size();
     }
-
 }
