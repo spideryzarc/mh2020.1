@@ -99,10 +99,10 @@ public class BPP {
 
     public static void main(String args[]) throws IOException {
         ArrayList<Solver> solvers = new ArrayList<>();
-        solvers.add(new RMS(5));
-//        solvers.add(new ILS(5, 1));
+//        solvers.add(new RMS(5));
+        solvers.add(new ILS(5, 1));
 //        benchmark("/home/einstein/Documentos/Hard28/", solvers);
-        benchmark("/home/einstein/Documentos/Scholl/Scholl_1/", solvers);
+        benchmark("/home/einstein/Documentos/Scholl/Scholl_2/", solvers);
 
     }
 

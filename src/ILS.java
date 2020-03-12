@@ -23,17 +23,17 @@ public class ILS implements Solver {
     @Override
     public int run(Sol best) {
         bpp = best.bpp;
-        HC hc = new HC(bpp);
+        VND vnd = new VND(bpp);
 
         bpp.trivial(best);
-        hc.run(best);
+        vnd.run(best);
 
         Sol current = new Sol(bpp);
         current.copy(best);
 
         for (int i = 1; i <= ite; i++) {
             pertub(current);
-            hc.run(current);
+            vnd.run(current);
             if (current.size() < best.size()) {
                 best.copy(current);
                 System.out.println(i + " HC " + best.size());

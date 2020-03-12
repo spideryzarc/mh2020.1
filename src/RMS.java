@@ -15,7 +15,7 @@ public class RMS implements Solver {
 
     public int run(Sol best) {
         bpp = best.bpp;
-        HC hc = new HC(bpp);
+        VND vnd = new VND(bpp);
         bpp.trivial(best);
         Sol sol = new Sol(bpp);
 
@@ -27,7 +27,7 @@ public class RMS implements Solver {
         for (int i = 1; i <= ite; i++) {
             Utils.shuffle(order);
             bpp.firstFit(sol, order);
-            hc.run(sol);
+            vnd.run(sol);
             if (sol.size() < best.size()) {
                 best.copy(sol);
                 System.out.println(i + " HC " + best.size());

@@ -145,6 +145,10 @@ public class Sol {
         public int size() {
             return itens.size();
         }
+
+        public int getItem(int k) {
+            return itens.get(k);
+        }
     }
 }
 
