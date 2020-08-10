@@ -2,8 +2,11 @@
  * Iterated Local Search
  */
 public class ILS implements Solver {
+    /**número de iterações*/
     int ite;
+    /**número de swaps em cada pertubação*/
     int k;
+
 
     public ILS(int ite, int k) {
         this.ite = ite;
@@ -25,24 +28,27 @@ public class ILS implements Solver {
         bpp = best.bpp;
         VND vnd = new VND(bpp);
 
-        bpp.trivial(best);
+        bpp.firstFit(best);
         vnd.run(best);
 
         Sol current = new Sol(bpp);
         current.copy(best);
-
-        for (int i = 1; i <= ite; i++) {
+        int lb = bpp.LB();
+        for (int i = 1; i <= ite && lb < best.size(); i++) {
             pertub(current);
             vnd.run(current);
             if (current.size() < best.size()) {
                 best.copy(current);
-                System.out.println(i + " HC " + best.size());
+                System.out.println(i + " ILS " + best.size());
             }
         }
         return best.size();
     }
 
+    /**Provoca k trocas entre dois itens aleatórios alocados em
+     * pacotes diferentes */
     private void pertub(Sol current) {
+        current.setAllFlags(false);
         for (int i = 0; i < k; i++) {
             int a, b;
             do {

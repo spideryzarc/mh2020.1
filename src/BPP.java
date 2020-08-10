@@ -26,6 +26,9 @@ public class BPP {
         w = new int[n];
     }
 
+    /**
+     * Limite inferior trivial, soma dos pesos dividido pela capacidade arredondado para cimarr
+     */
     public int LB() {
         int s = 0;
         for (int x : w)
@@ -42,6 +45,9 @@ public class BPP {
                 '}';
     }
 
+    /**
+     * Ler arquivo de benchmark
+     */
     public BPP(String path) throws FileNotFoundException {
         System.out.println(path);
         Scanner sc = new Scanner(new File(path));
@@ -65,6 +71,23 @@ public class BPP {
                     break;
     }
 
+    public void firstFit(Sol sol) {
+        sol.reset();
+        for (int i = 0; i < w.length; i++)
+            for (int j = 0; j <= sol.size(); j++)
+                if (sol.add(i, j))
+                    break;
+    }
+
+
+    /**
+     * Aplica da um dos solvers a cada uma das instâncias no diretório
+     * e escreve um arquivo result.txt com os resultados médios de cada
+     * solver.
+     *
+     * @param path    - diretório com instâncias de benchmark
+     * @param solvers - lista de algoritmos para BPP
+     */
     public static void benchmark(String path, ArrayList<Solver> solvers) throws IOException {
         File dir = new File(path);
         File[] files = dir.listFiles();
@@ -77,10 +100,7 @@ public class BPP {
                 e.printStackTrace();
             }
         }
-
-
         FileWriter fw = new FileWriter(new File("result.txt"), true);
-
         for (Solver s : solvers) {
             int sumCost = 0;
             long t0 = System.currentTimeMillis();
@@ -97,15 +117,9 @@ public class BPP {
 
     }
 
-    public static void main(String args[]) throws IOException {
-        ArrayList<Solver> solvers = new ArrayList<>();
-//        solvers.add(new RMS(5));
-        solvers.add(new ILS(5, 1));
-//        benchmark("/home/einstein/Documentos/Hard28/", solvers);
-        benchmark("/home/einstein/Documentos/Scholl/Scholl_2/", solvers);
-
-    }
-
+    /**
+     * Preenche uma solução com uma solução composto por um item por pacote
+     */
     public void trivial(Sol sol) {
         sol.reset();
         for (int i = 0; i < w.length; i++) {

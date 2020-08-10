@@ -20,6 +20,7 @@ public class HC {
 
     private ArrayList<Sol.Bin> bins = new ArrayList<>();
 
+    /**Move um item se, ao sair, este item esvazia um pacote*/
     private boolean firstImp1(Sol sol, int fo) {
         bins = sol.getBins(bins);
         for (int i = 0; i < bpp.w.length; i++)
@@ -36,6 +37,7 @@ public class HC {
         return false;
     }
 
+    /**Move um item se, ao sair, este item diminui a carga o pacote menos cheio*/
     private boolean firstImp2(Sol sol, int fo) {
         bins = sol.getBins(bins);
 
@@ -58,6 +60,8 @@ public class HC {
         return false;
     }
 
+    /**move um item se, ao sair, o desvio padrão da distribuição de
+     * carga aumenta*/
     private boolean firstImp3(Sol sol, int fo) {
         bins = sol.getBins(bins);
         double media = (double) bpp.wSum / sol.size();
