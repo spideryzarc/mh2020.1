@@ -69,6 +69,7 @@ public class BPP {
             for (int j = 0; j <= sol.size(); j++)
                 if (sol.add(i, j))
                     break;
+        assert sol.isFeasible() : "Solução inviável";
     }
 
     public void firstFit(Sol sol) {
@@ -77,6 +78,7 @@ public class BPP {
             for (int j = 0; j <= sol.size(); j++)
                 if (sol.add(i, j))
                     break;
+        assert sol.isFeasible() : "Solução inviável";
     }
 
 

@@ -8,11 +8,11 @@ import static java.util.Arrays.fill;
 public class Sol {
     BPP bpp;
 
-    private ArrayList<Bin> bins = new ArrayList<>();
+    private final ArrayList<Bin> bins = new ArrayList<>();
     /**
      * binOf[i] é o pacote do item i
      */
-    private Bin binOf[];
+    private final Bin[] binOf;
 
 
     @Override
@@ -26,20 +26,13 @@ public class Sol {
      * capacidade do pacote j.
      *
      * @return true sse o item for inserido no pacote
-     * @throws NullPointerException se o item i já estiver alocado
+     * @throws AssertionError se o item i já estiver alocado
      */
     public boolean add(int i, int b) {
-        if (binOf[i] != null) {
-            throw new NullPointerException("Item já alocado: " + i);
-        }
-
-        if (bins.size() < b) {
-            throw new NullPointerException("Pacote não aberto");
-        } else if (bins.size() == b) {
-            //abre novo pacote
+        assert (binOf[i] == null) : "Item já alocado: " + i;
+        assert (bins.size() >= b) : "Pacote não aberto: " + b;
+        if (bins.size() == b)
             bins.add(new Bin());
-        }
-
         return add(i, bins.get(b));
     }
 
@@ -48,20 +41,16 @@ public class Sol {
      * capacidade de b.
      *
      * @return true sse o item for inserido no pacote
-     * @throws NullPointerException se o item i já estiver alocado
+     * @throws AssertionError se o item i já estiver alocado
      */
     public boolean add(int i, Bin b) {
-        if (binOf[i] != null) {
-            throw new NullPointerException("Item já alocado: " + i);
-        }
+        assert (binOf[i] == null) : "Item já alocado: " + i;
 
-        if (b.load + bpp.w[i] > bpp.C) {
-            //System.err.println("Capacidade insuficiente");
+        if (b.load + bpp.w[i] > bpp.C)
             return false;
-        }
+
         b.add(i);
         binOf[i] = b;
-
         return true;
     }
 
@@ -82,29 +71,32 @@ public class Sol {
 
     /**
      * remove o item i da solução
+     *
+     * @throws AssertionError se tentar remover item não alocado
      */
-    public boolean remove(int i) {
+    public void remove(int i) {
         Bin b = binOf[i];
-        if (b == null) {
-            throw new NullPointerException("remover item não alocado");
-        }
+        assert (b != null) : "remover item não alocado";
+
         b.remove(i);
         binOf[i] = null;
         if (b.itens.size() == 0)
             bins.remove(b);
-        return true;
     }
 
     public void copy(Sol src) {
         this.reset();
-        for (int b = 0; b < src.size(); b++) {
+        for (int b = 0, len = src.size(); b < len; b++) {
             for (int i : src.bins.get(b).itens) {
                 this.add(i, b);
             }
         }
+        assert isFeasible() : "Solução inviável";
     }
 
-    /**troca os pacotes dos items a e b */
+    /**
+     * troca os pacotes dos items a e b
+     */
     public void swap(int a, int b) {
         Bin ba = binOf[a];
         Bin bb = binOf[b];
@@ -130,6 +122,28 @@ public class Sol {
 //        return s/size() ;
     }
 
+    /**@return true se é uma solução viável de BPP*/
+    public boolean isFeasible() {
+//        System.out.println("************************ ");
+        for (Bin b : bins)
+            if (b.load > bpp.C) {
+                System.err.println("um dos pacotes excede a capacidade.");
+                return false;
+            }
+        for (int i = 0; i < binOf.length; i++) {
+            if (binOf[i] == null) {
+                System.err.println("item " + i + " não está alocado.");
+                return false;
+            }
+            if (!bins.contains(binOf[i])) {
+                System.err.println("item alocado em pacote fora da solução.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
      * Representa um pacote
      */
@@ -139,7 +153,7 @@ public class Sol {
          */
         public boolean flag = true;
 
-        private ArrayList<Integer> itens = new ArrayList<>();
+        private final ArrayList<Integer> itens = new ArrayList<>();
         /**
          * soma dos pesos dos itens  neste pacote
          */
@@ -163,7 +177,8 @@ public class Sol {
 
         private void remove(Integer i) {
             flag = true;
-            itens.remove(i);
+            boolean r = itens.remove(i);
+            assert r : "remoção de item que não está no pacote.";
             load -= bpp.w[i];
         }
 
@@ -172,7 +187,7 @@ public class Sol {
         }
 
         /**
-         * @retorn o k ésimo item do pacote
+         * @return o k-ésimo item do pacote
          */
         public int getItem(int k) {
             return itens.get(k);

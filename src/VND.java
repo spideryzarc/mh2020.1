@@ -56,6 +56,7 @@ public class VND {
                         if (delta > 0.001) {
                             sol.remove(i);
                             sol.add(i, bj);
+                            assert sol.isFeasible() : "Solução inviável";
                             return true;
                         }
 
@@ -84,6 +85,7 @@ public class VND {
                     double delta = deltaDev(media, l0i, lfi) + deltaDev(media, l0j, lfj);
                     if (delta > 0.001) {
                         sol.swap(i, j);
+                        assert sol.isFeasible() : "Solução inviável";
                         return true;
                     }
                 }
@@ -115,8 +117,9 @@ public class VND {
                                 int lfj = l0j - bpp.w[j] + bpp.w[i];
                                 double delta = deltaDev(media, l0i, lfi) + deltaDev(media, l0j, lfj);
                                 if (delta > 0.001) {
-                                    sol.swap(i, j);
-                                    return true;
+//                                    sol.swap(i, j);
+                                    assert sol.isFeasible() : "Solução inviável";
+//                                    return true;
                                 }
                             }
                         }
@@ -153,6 +156,7 @@ public class VND {
                                     sol.swap(i, iteml);
                                     sol.add(itemk, bi);
 //                                    System.out.println("nbh3!!");
+                                    assert sol.isFeasible() : "Solução inviável";
                                     return true;
                                 }
                             }

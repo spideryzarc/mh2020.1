@@ -55,13 +55,12 @@ public class VNS implements Solver {
             if (current.size() < best.size() ||
                     (current.size() == best.size() && d > bestStd + .001)) {
                 best.copy(current);
-                System.out.println(i + " " + p + " VNS " + best.size()+ "\t"+d);
+                System.out.println(i + " " + p + " VNS " + best.size() + "\t" + d);
                 p = 1;
                 noImpCount = 0;
                 bestStd = d;
 
-            }
-            else {
+            } else {
                 current.copy(best);
             }
 
@@ -71,6 +70,7 @@ public class VNS implements Solver {
             }
             noImpCount++;
         }
+
         return best.size();
     }
 
@@ -90,6 +90,7 @@ public class VNS implements Solver {
                     current.binOf(b).getLoad() - bpp.w[b] + bpp.w[a] > bpp.C);
             current.swap(a, b);
         }
+        assert current.isFeasible() : "Solução inviável";
     }
 
 
