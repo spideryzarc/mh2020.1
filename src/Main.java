@@ -8,14 +8,18 @@ public class Main {
         int ite = 10000;
 //        solvers.add(new RMS(ite));
 //        solvers.add(new ILS(ite, 1));
-//        solvers.add(new ILS(ite, 5));
-        solvers.add(new VNS(ite, 5,1));
-        solvers.add(new VNS(ite, 5,5));
+//        solvers.add(new VNS(ite));
+        solvers.add(new GRASP(ite,3));
+
+
+
 //        BPP.benchmark("../instances/Hard28/", solvers);
-//        BPP.benchmark("../instances/Wascher/", solvers);
-        BPP.benchmark("../instances/Scholl/Scholl_3/", solvers);
+        BPP.benchmark("../instances/Wascher/", solvers);
+//        BPP.benchmark("../instances/Scholl/Scholl_3/", solvers);
+//        BPP.benchmark("../instances/Falkenauer/Falkenauer U/", solvers);
 
 
 
     }
 }
+

@@ -21,9 +21,20 @@ public class BPP {
      */
     int wSum;
 
+    /**número de itens no problema*/
+    final int N;
+
+    /**lista de indices 0,1...N para embaralhar nos métodos*/
+    final int idx[];
+
     public BPP(int n, int C) {
         this.C = C;
         w = new int[n];
+        N = n;
+        idx = new int[n];
+        for (int i = 0; i < n; i++) {
+            idx[i]=i;
+        }
     }
 
     /**
@@ -51,15 +62,20 @@ public class BPP {
     public BPP(String path) throws FileNotFoundException {
         System.out.println(path);
         Scanner sc = new Scanner(new File(path));
-        int n = sc.nextInt();
+        N = sc.nextInt();
         C = sc.nextInt();
-        w = new int[n];
+        w = new int[N];
         wSum = 0;
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < N; i++) {
             w[i] = sc.nextInt();
             wSum += w[i];
         }
         sc.close();
+
+        idx = new int[N];
+        for (int i = 0; i < N; i++) {
+            idx[i]=i;
+        }
     }
 
 

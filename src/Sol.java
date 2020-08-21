@@ -15,6 +15,7 @@ public class Sol {
     private final Bin[] binOf;
 
 
+
     @Override
     public String toString() {
         return bins.size() + " " + bins.toString();
