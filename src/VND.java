@@ -103,9 +103,10 @@ public class VND {
     private boolean NBH2(Sol sol) {
         int s = sol.size();
         double media = (double) bpp.wSum / s;
-
+        boolean flag = false;
         for (int aa = 0; aa < s; aa++) {
             Sol.Bin a = sol.getBin(aa);
+            aqui:
             for (int bb = aa + 1; bb < s; bb++) {
                 Sol.Bin b = sol.getBin(bb);
                 if (a.flag || b.flag) {
@@ -123,14 +124,16 @@ public class VND {
                                 if (delta > 0.001) {
                                     sol.swap(i, j);
                                     assert sol.isFeasible() : "Solução inviável";
-                                    return true;
+                                    flag = true;
+//                                    return true;
+                                    continue aqui;
                                 }
                             }
                         }
                 }
             }
         }
-        return false;
+        return flag;
     }
 
     /**

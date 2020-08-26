@@ -21,10 +21,14 @@ public class BPP {
      */
     int wSum;
 
-    /**número de itens no problema*/
+    /**
+     * número de itens no problema
+     */
     final int N;
 
-    /**lista de indices 0,1...N para embaralhar nos métodos*/
+    /**
+     * lista de indices 0,1...N para embaralhar nos métodos
+     */
     final int idx[];
 
     public BPP(int n, int C) {
@@ -33,7 +37,7 @@ public class BPP {
         N = n;
         idx = new int[n];
         for (int i = 0; i < n; i++) {
-            idx[i]=i;
+            idx[i] = i;
         }
     }
 
@@ -60,7 +64,7 @@ public class BPP {
      * Ler arquivo de benchmark
      */
     public BPP(String path) throws FileNotFoundException {
-        System.out.println(path);
+//        System.out.println(path);
         Scanner sc = new Scanner(new File(path));
         N = sc.nextInt();
         C = sc.nextInt();
@@ -74,7 +78,7 @@ public class BPP {
 
         idx = new int[N];
         for (int i = 0; i < N; i++) {
-            idx[i]=i;
+            idx[i] = i;
         }
     }
 
@@ -111,13 +115,14 @@ public class BPP {
         File[] files = dir.listFiles();
         ArrayList<BPP> instances = new ArrayList<>();
         for (File f : files) {
-            System.out.println(f.getName());
+//            System.out.println(f.getName());
             try {
                 instances.add(new BPP(f.getAbsolutePath()));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
+        System.out.println(files.length + " instâncias." );
         FileWriter fw = new FileWriter(new File("result.txt"), true);
         for (Solver s : solvers) {
             int sumCost = 0;
@@ -130,6 +135,7 @@ public class BPP {
             double avg = (double) sumCost / instances.size();
             System.out.println(s + " " + avg + " " + t);
             fw.write(s + " " + avg + " " + t + "\n");
+            fw.flush();
         }
         fw.close();
 

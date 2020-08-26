@@ -45,6 +45,43 @@ public class GRASP implements Solver {
      */
     private int greedyRandom(Sol sol, int lb) {
         sol.reset();// esvazia a solução
+        int a = 0;
+        for (a = 0; a < lb && a < k; a++)//abre lb pacotes com os lb maiores itens
+            sol.add(a, a);
+
+        for (int i = a; i < bpp.N; i++) {// para cada um dos itens restantes
+            candidatos.clear();
+            for (int j = 0, size = sol.size(); j < size; j++) // lista os pacotes compatíveis
+                if (sol.getBin(j).getLoad() + bpp.w[i] <= bpp.C)
+                    candidatos.add(sol.getBin(j));
+
+            if (candidatos.isEmpty()) {
+                //novo pacote se não há pacotes compatíveis
+                sol.add(i, sol.size());
+            } else {
+                //ordena os pacotes compatíveis  em ordem decrescente de carga
+                Collections.sort(candidatos, Comparator.comparingInt(x -> -x.getLoad()));
+                if (sol.size() >= lb || candidatos.size() >= k) {
+                    // sorteia um entre os k primeiros
+                    int x = Utils.rd.nextInt(Math.min(candidatos.size(), k));
+                    // adiciona o item i neste pacote
+                    sol.add(i, candidatos.get(x));
+                } else {
+                        sol.add(i, sol.size());
+                }
+            }
+        }
+
+
+        assert sol.isFeasible() : "Solução inviável";
+        return sol.size();
+    }
+
+    /**
+     * método guloso randomizado
+     */
+    private int greedyRandom_old(Sol sol, int lb) {
+        sol.reset();// esvazia a solução
 
         for (int i = 0; i < lb; i++)//abre lb pacotes com os lb maiores itens
             sol.add(i, i);
@@ -72,7 +109,6 @@ public class GRASP implements Solver {
         assert sol.isFeasible() : "Solução inviável";
         return sol.size();
     }
-
 
     @Override
     public int run(Sol best) {
