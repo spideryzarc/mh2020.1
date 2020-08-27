@@ -50,14 +50,21 @@ public class GLS implements Solver {
         double bestStd = best.std();
         for (int i = 1; i <= ite && lb < best.size(); i++) {
 
+            double tmp = current.std();
             guidedVND.run(current);
             addPenalties(current);
             vnd.run(current);
 
-            if (current.size() < best.size() || bestStd < current.std()) {
+            double cstd = current.std();
+
+            if (Math.abs(cstd - tmp) > .1) {//já escapou do ótimo local
+                penaltyReset();
+            }
+
+            if (current.size() < best.size() || bestStd < cstd) {
                 best.copy(current);
-                bestStd = current.std();
-                System.out.println(i + " GLS " + best.size() + " "+ bestStd);
+                bestStd = cstd;
+                System.out.println(i + " GLS " + best.size() + " " + bestStd);
                 penaltyReset();
             }
         }
@@ -96,19 +103,23 @@ public class GLS implements Solver {
     }
 
     /**
-     * Adiciona na matriz de frequência
+     * Seleciona um item aleatório e adiciona penalidades para mantê-lo junto
+     * com os outros itens que dividem o mesmo pacote na solução corrente.
      */
     private void addPenalties(Sol sol) {
-        Sol.Bin k = sol.getBin(Utils.rd.nextInt(sol.size()));
-        for (int i = 0, len = k.size(); i < len; i++) {
-            for (int j = i + 1; j < len; j++) {
-                if (k.getItem(i) > k.getItem(j)) {
-                    p[k.getItem(i)][k.getItem(j)]++;
+        int j = Utils.rd.nextInt(bpp.N);
+        Sol.Bin k = sol.binOf(j);
+        for (int ii = 0, len = k.size(); ii < len; ii++) {
+            int i = k.getItem(ii);
+            if (i != j) {
+                if (i > j) {
+                    p[i][j]++;
                 } else {
-                    p[k.getItem(j)][k.getItem(i)]++;
+                    p[j][i]++;
                 }
             }
         }
+
     }
 
 
