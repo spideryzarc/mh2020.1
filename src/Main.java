@@ -9,12 +9,13 @@ public class Main {
             System.out.println(e.getMessage());
         }
         ArrayList<Solver> solvers = new ArrayList<>();
-        int ite = 10000;
+        int ite = 100000;
 //        solvers.add(new RMS(ite));
 //        solvers.add(new ILS(ite, 1));
 //        solvers.add(new VNS(ite));
 //        solvers.add(new GRASP(ite, 14));
-        solvers.add(new GLS(ite));
+//        solvers.add(new GLS(ite));
+        solvers.add(new SA(ite,100,.001));
 
 
 //        BPP.benchmark("../instances/Hard28/", solvers);

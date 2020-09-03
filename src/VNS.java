@@ -98,7 +98,8 @@ public class VNS implements Solver {
     /**
      * Cria um novo pacote vazio e o preenche com itens em ordem aleatória
      */
-    private void openBin(Sol sol) {
+    static void openBin(Sol sol) {
+        BPP bpp =sol.bpp;
         int idx[] = bpp.idx;
         Utils.shuffle(idx);
         sol.remove(idx[0]);
