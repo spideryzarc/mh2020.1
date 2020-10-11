@@ -26,17 +26,6 @@ public class VND {
     }
 
 
-    /**
-     * @param avg load médio
-     * @param l0  load inicial (antes da alteração)
-     * @param lf  load final (depois da alteração)
-     * @return variação no desvio padrão depois da alteração
-     */
-    private static final double deltaDev(double avg, int l0, int lf) {
-        double d0 = (l0 - avg);
-        double df = (lf - avg);
-        return df * df - d0 * d0;
-    }
 
     /**
      * Vizinhaça 1 - move um item de um pacote para outro
@@ -55,7 +44,7 @@ public class VND {
                         int lfi = l0i - bpp.w[i];
                         int l0j = bj.getLoad();
                         int lfj = l0j + bpp.w[i];
-                        double delta = deltaDev(media, l0i, lfi) + deltaDev(media, l0j, lfj);
+                        double delta = Utils.deltaDev(media, l0i, lfi) + Utils.deltaDev(media, l0j, lfj);
                         if (delta > 0.001) {
                             sol.remove(i);
                             sol.add(i, bj);
@@ -120,7 +109,7 @@ public class VND {
                                 int lfi = l0i - bpp.w[i] + bpp.w[j];
                                 int l0j = b.getLoad();
                                 int lfj = l0j - bpp.w[j] + bpp.w[i];
-                                double delta = deltaDev(media, l0i, lfi) + deltaDev(media, l0j, lfj);
+                                double delta = Utils.deltaDev(media, l0i, lfi) + Utils.deltaDev(media, l0j, lfj);
                                 if (delta > 0.001) {
                                     sol.swap(i, j);
                                     assert sol.isFeasible() : "Solução inviável";
@@ -157,7 +146,7 @@ public class VND {
                                 int lfi = l0i - bpp.w[i] + bpp.w[k] + bpp.w[l];
                                 int l0j = b.getLoad();
                                 int lfj = l0j + bpp.w[i] - bpp.w[k] - bpp.w[l];
-                                double delta = deltaDev(media, l0i, lfi) + deltaDev(media, l0j, lfj);
+                                double delta = Utils.deltaDev(media, l0i, lfi) + Utils.deltaDev(media, l0j, lfj);
                                 if (delta > 0.001) {
                                     sol.remove(k);
                                     sol.swap(i, l);

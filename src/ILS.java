@@ -5,19 +5,19 @@ public class ILS implements Solver {
     /**número de iterações*/
     int ite;
     /**número de swaps em cada pertubação*/
-    int k;
+    int K;
 
 
     public ILS(int ite, int k) {
         this.ite = ite;
-        this.k = k;
+        this.K = k;
     }
 
     @Override
     public String toString() {
         return "ILS{" +
                 "ite=" + ite +
-                ", k=" + k +
+                ", k=" + K +
                 '}';
     }
 
@@ -35,7 +35,7 @@ public class ILS implements Solver {
         current.copy(best);
         int lb = bpp.LB();
         for (int i = 1; i <= ite && lb < best.size(); i++) {
-            shake(current);
+            shake(current, K);
             vnd.run(current);
             if (current.size() < best.size()) {
                 best.copy(current);
@@ -47,7 +47,8 @@ public class ILS implements Solver {
 
     /**Provoca k trocas entre dois itens aleatórios alocados em
      * pacotes diferentes */
-    private void shake(Sol sol) {
+    static void shake(Sol sol, int k) {
+        BPP bpp = sol.bpp;
         sol.setAllFlags(false);
         for (int i = 0; i < k; i++) {
             int a, b;

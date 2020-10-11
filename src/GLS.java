@@ -45,18 +45,17 @@ public class GLS implements Solver {
 
         Sol current = new Sol(bpp);
         current.copy(best);
-        addPenalties(current);
+        extractPenalties(current);
         int lb = bpp.LB();
         double bestStd = best.std();
         for (int i = 1; i <= ite && lb < best.size(); i++) {
 
             double tmp = current.std();
             guidedVND.run(current);
-            addPenalties(current);
+            extractPenalties(current);
             vnd.run(current);
 
             double cstd = current.std();
-
             if (Math.abs(cstd - tmp) > .1) {//já escapou do ótimo local
                 penaltyReset();
             }
@@ -106,7 +105,7 @@ public class GLS implements Solver {
      * Seleciona um item aleatório e adiciona penalidades para mantê-lo junto
      * com os outros itens que dividem o mesmo pacote na solução corrente.
      */
-    private void addPenalties(Sol sol) {
+    private void extractPenalties(Sol sol) {
         int j = Utils.rd.nextInt(bpp.N);
         Sol.Bin k = sol.binOf(j);
         for (int ii = 0, len = k.size(); ii < len; ii++) {

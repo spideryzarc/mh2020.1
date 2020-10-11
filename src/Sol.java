@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static java.util.Arrays.fill;
 
@@ -13,7 +14,6 @@ public class Sol {
      * binOf[i] é o pacote do item i
      */
     private final Bin[] binOf;
-
 
 
     @Override
@@ -123,7 +123,9 @@ public class Sol {
 //        return s/size() ;
     }
 
-    /**@return true se é uma solução viável de BPP*/
+    /**
+     * @return true se é uma solução viável de BPP
+     */
     public boolean isFeasible() {
 //        System.out.println("************************ ");
         for (Bin b : bins)
@@ -216,6 +218,26 @@ public class Sol {
 
     public Bin getBin(int index) {
         return bins.get(index);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Sol sol = (Sol) o;
+        for (int i = 0; i < bpp.N; i++) {
+            for (int j = i + 1; j < bpp.N; j++) {
+                if (binOf[i] == binOf[j] && sol.binOf[i] != sol.binOf[j])
+                    return false;
+            }
+        }
+        return true;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(binOf);
     }
 }
 

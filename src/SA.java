@@ -45,7 +45,6 @@ public class SA implements Solver {
 
 
         double lambda = Math.pow(Tf / T0, 1.0 / ite);
-
         Sol aux = new Sol(bpp);
         int lb = bpp.LB();
         for (double T = T0; T > Tf && lb < best.size(); T *= lambda) {
@@ -68,8 +67,6 @@ public class SA implements Solver {
                     currStd = auxStd;
 //                    System.out.println(T + " "+currStd +" *");
                 }
-
-
         }
 
         assert best.isFeasible() : "Solução inviável";

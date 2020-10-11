@@ -23,4 +23,17 @@ public class Utils {
     }
 
 
+    /**
+     * @param avg load médio
+     * @param l0  load inicial (antes da alteração)
+     * @param lf  load final (depois da alteração)
+     * @return variação no desvio padrão depois da alteração
+     */
+    public static double deltaDev(double avg, int l0, int lf) {
+        double d0 = (l0 - avg);
+        double df = (lf - avg);
+        return df * df - d0 * d0;
+    }
+
+
 }
